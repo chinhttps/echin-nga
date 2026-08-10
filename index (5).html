@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Veyro — Smart finds, everyday essentials.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EFEEE6;
+    --paper-alt: #E4E1D3;
+    --ink: #17170F;
+    --ink-soft: #55534A;
+    --rust: #B8451E;
+    --gold: #C99A2E;
+    --line: #D3CFBE;
+    --card-bg: #F7F6F0;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .mono{
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  a{ color: inherit; }
+
+  /* ---------- NAV ---------- */
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 28px 6vw;
+  }
+
+  .wordmark{
+    font-family:'Archivo', sans-serif;
+    font-weight:900;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+  }
+
+  .wordmark span{ color: var(--rust); }
+
+  .brand-row{
+    display:flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .by{
+    font-size: 0.65rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    padding-left: 10px;
+    border-left: 1px solid var(--line);
+  }
+
+  nav{
+    display:flex;
+    align-items:center;
+    gap: 16px;
+  }
+
+  nav .mono{
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .admin-btn{
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .admin-btn:hover{ border-color: var(--rust); color: var(--rust); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: 8vh 6vw 12vh;
+    max-width: 1100px;
+    perspective: 900px;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    padding: 6px 12px 6px 8px;
+    border-radius: 999px;
+    margin-bottom: 2.4rem;
+  }
+
+  .eyebrow .dot{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--rust);
+    display:inline-block;
+  }
+
+  h1{
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.6rem, 6.4vw, 5.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+  }
+
+  h1 em{
+    font-style: normal;
+    color: var(--rust);
+  }
+
+  .hero-sub{
+    margin-top: 2rem;
+    max-width: 46ch;
+    font-size: 1.08rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .hero-actions{
+    margin-top: 2.6rem;
+    display:flex;
+    align-items:center;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 22px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .btn:hover{ background: var(--rust); transform: translateY(-1px); }
+  .btn:active{ transform: translateY(1px); }
+
+  .btn-secondary{
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* floating tag illustration */
+  .hero-tag{
+    position: absolute;
+    top: 4vh;
+    right: 7vw;
+    width: 168px;
+    transform-style: preserve-3d;
+    animation: tagFloat3D 6s ease-in-out infinite;
+  }
+
+  @keyframes tagFloat3D{
+    0%, 100%{ transform: rotate(9deg) rotateY(0deg) translateY(0); }
+    50%{ transform: rotate(9deg) rotateY(22deg) translateY(-8px); }
+  }
+
+  .hero-tag svg{ width:100%; height:auto; display:block; }
+
+  @media (max-width: 860px){
+    .hero-tag{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-tag{ animation: none; }
+  }
+
+  /* ---------- FEATURES ---------- */
+  .section-head{
+    padding: 0 6vw;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .section-head h2{
+    font-family:'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    letter-spacing: -0.01em;
+  }
+
+  .section-head p{
+    color: var(--ink-soft);
+    max-width: 32ch;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .features{
+    padding: 10vh 6vw 12vh;
+    border-top: 1px solid var(--line);
+  }
+
+  .tag-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    padding: 0 6vw;
+    perspective: 1400px;
+  }
+
+  @media (max-width: 920px){
+    .tag-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 620px){
+    .tag-grid{ grid-template-columns: 1fr; }
+  }
+
+  .tag-card{
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 30px 24px 26px;
+    height: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    will-change: transform;
+    box-shadow: 0 1px 0 var(--line);
+    transition: transform 0.15s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  .tag-card:hover{
+    box-shadow: 0 18px 34px -20px rgba(23,23,15,0.4);
+    border-color: var(--rust);
+  }
+
+  .tag-card:focus-visible{
+    outline: 2px solid var(--rust);
+    outline-offset: 3px;
+  }
+
+  .tag-open{
+    display:block;
+    margin-top: 16px;
+    font-size: 0.64rem;
+    color: var(--rust);
+    text-transform: uppercase;
+  }
+
+  .tag-hole{
+    position: absolute;
+    top: 16px; left: 16px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--ink-soft);
+  }
+
+  .tag-code{
+    display:block;
+    text-align:right;
+    font-size: 0.68rem;
+    color: var(--gold);
+    margin-bottom: 22px;
+  }
+
+  .tag-icon{
+    width: 30px; height:30px;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+
+  .tag-icon svg{ width:100%; height:100%; }
+
+  .tag-card h3{
+    font-family:'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 1.08rem;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .tag-card p{
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- MERCH ---------- */
+  .merch{
+    padding: 10vh 6vw 12vh;
+    border-top: 1px solid var(--line);
+    background: var(--paper-alt);
+  }
+
+  .merch-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    padding: 0 6vw;
+    perspective: 1400px;
+  }
+
+  @media (max-width: 920px){
+    .merch-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 620px){
+    .merch-grid{ grid-template-columns: 1fr; }
+  }
+
+  .product-card{
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 20px 20px 22px;
+    display:flex;
+    flex-direction: column;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.15s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  .product-card:hover{
+    box-shadow: 0 14px 30px -18px rgba(23,23,15,0.35);
+    border-color: var(--rust);
+  }
+
+  .product-badge{
+    position:absolute;
+    top: 14px; right: 14px;
+    font-size: 0.62rem;
+    color: var(--rust);
+    border: 1px solid var(--rust);
+    border-radius: 999px;
+    padding: 3px 9px;
+    text-transform: uppercase;
+  }
+
+  .product-image{
+    width: 100%;
+    height: 130px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom: 16px;
+  }
+
+  .product-image svg{ width: 92px; height: 92px; }
+
+  .product-info{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .product-info h3{
+    font-family:'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .product-price{
+    font-size: 0.85rem;
+    color: var(--rust);
+    white-space: nowrap;
+  }
+
+  .product-card p{
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+
+  .product-stock{
+    font-size: 0.64rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .product-cta{
+    margin-top: auto;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.82rem;
+    padding: 11px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .product-cta:hover{ border-color: var(--rust); color: var(--rust); }
+  .product-cta:active{ transform: translateY(1px); }
+
+  /* ---------- ADMIN BAR ---------- */
+  .admin-bar{
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap: 16px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 6vw;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 60;
+  }
+
+  .admin-bar .admin-btn{ color: var(--paper); border-color: rgba(239,238,230,0.35); }
+  .admin-bar .admin-btn:hover{ border-color: var(--rust); color: var(--rust); }
+
+  body.admin-active .admin-bar{ display:flex; }
+
+  /* ---------- SITE GATE ---------- */
+  .gate-overlay{
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(184,69,30,0.10), transparent 45%),
+      var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 20px;
+    z-index: 500;
+  }
+
+  .gate-overlay.gate-hidden{ display:none; }
+
+  body.gate-open{ overflow: hidden; }
+
+  .gate-box{ max-width: 360px; }
+
+  .gate-wordmark{
+    text-align:center;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+
+  .gate-box .modal-sub{ text-align:center; }
+
+  .gate-tabs{
+    display:flex;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 22px;
+  }
+
+  .gate-tab{
+    flex:1;
+    background: transparent;
+    border: none;
+    padding: 9px 0;
+    border-radius: 999px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .gate-tab.active{
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ---------- ADMIN MODAL ---------- */
+  .modal-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(23,23,15,0.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding: 20px;
+    z-index: 100;
+  }
+
+  .modal-overlay.open{ display:flex; }
+
+  .modal-box{
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 32px 28px;
+  }
+
+  .modal-box h3{
+    font-family:'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+  }
+
+  .modal-sub{
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+
+  .modal-close{
+    position: absolute;
+    top: 14px; right: 16px;
+    background:none;
+    border:none;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+
+  .modal-field{ margin-bottom: 14px; }
+
+  .modal-field label{
+    display:block;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+
+  .modal-field input{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  .modal-field input:focus{ outline:none; border-color: var(--rust); }
+
+  .modal-error{
+    font-size: 0.76rem;
+    color: var(--rust);
+    min-height: 1.2em;
+    margin-bottom: 8px;
+  }
+
+  .modal-submit{
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .modal-submit:hover{ background: var(--rust); }
+  .modal-submit:active{ transform: translateY(1px); }
+
+  .modal-note{
+    margin-top: 14px;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* ---------- TAG DETAIL MODAL ---------- */
+  .tag-modal-box{
+    max-width: 420px;
+  }
+
+  .tag-modal-code{
+    display:inline-block;
+    font-size: 0.66rem;
+    color: var(--rust);
+    border: 1px solid var(--rust);
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+
+  .tag-modal-box h3{
+    font-family:'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  .tag-modal-desc{
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+  }
+
+  .tag-modal-label{
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  .tag-option-list{
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .tag-option{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    text-align: left;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.86rem;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+
+  .tag-option:hover{ border-color: var(--rust); }
+
+  .tag-option .dot-ring{
+    width: 14px; height:14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-soft);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .tag-option.selected{
+    border-color: var(--rust);
+    background: var(--card-bg);
+    transform: translateX(2px);
+  }
+
+  .tag-option.selected .dot-ring{
+    border-color: var(--rust);
+  }
+
+  .tag-option.selected .dot-ring::after{
+    content:'';
+    position:absolute;
+    inset: 2.5px;
+    border-radius: 50%;
+    background: var(--rust);
+  }
+
+  .tag-modal-close-btn{
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  .tag-modal-close-btn:hover{ background: var(--rust); }
+  .tag-modal-close-btn:active{ transform: translateY(1px); }
+
+
+  @keyframes shake{
+    10%,90%{ transform: translateX(-1px); }
+    20%,80%{ transform: translateX(2px); }
+    30%,50%,70%{ transform: translateX(-4px); }
+    40%,60%{ transform: translateX(4px); }
+  }
+
+  .shake{ animation: shake 0.4s; }
+
+  /* ---------- TOAST ---------- */
+  .toast{
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 200;
+    max-width: 88vw;
+    text-align: center;
+  }
+
+  .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
+
+  /* ---------- ADMIN-ONLY DATA ---------- */
+  .admin-only{ display:none; }
+  body.admin-active .admin-only{ display:inline; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 40px 6vw;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  footer .wordmark{ font-size: 1rem; }
+
+  footer .mono{
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body class="gate-open">
+
+<div class="gate-overlay" id="gateOverlay">
+  <div class="modal-box gate-box">
+    <div class="wordmark gate-wordmark">Vey<span>ro</span></div>
+    <p class="modal-sub">Sign in to view the showcase — student project for System Analysis &amp; Design.</p>
+
+    <div class="gate-tabs">
+      <button type="button" class="gate-tab active" id="tabLogin">Log in</button>
+      <button type="button" class="gate-tab" id="tabSignup">Sign up</button>
+    </div>
+
+    <form id="loginForm" class="gate-form">
+      <div class="modal-field">
+        <label for="loginUser">Admin ID</label>
+        <input type="text" id="loginUser" autocomplete="username" required>
+      </div>
+      <div class="modal-field">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" autocomplete="current-password" required>
+      </div>
+      <p class="modal-error" id="loginError"></p>
+      <button type="submit" class="modal-submit">Log in</button>
+    </form>
+
+    <form id="signupForm" class="gate-form" style="display:none;">
+      <div class="modal-field">
+        <label for="signupUser">Choose an admin ID</label>
+        <input type="text" id="signupUser" autocomplete="username" required>
+      </div>
+      <div class="modal-field">
+        <label for="signupPass">Choose a password</label>
+        <input type="password" id="signupPass" autocomplete="new-password" required>
+      </div>
+      <div class="modal-field">
+        <label for="signupConfirm">Confirm password</label>
+        <input type="password" id="signupConfirm" autocomplete="new-password" required>
+      </div>
+      <p class="modal-error" id="signupError"></p>
+      <button type="submit" class="modal-submit">Sign up</button>
+    </form>
+
+    <p class="modal-note">Demo accounts only, held in memory for this visit — nothing is sent to a server. Default: <span class="mono">echinhttps / 062527</span></p>
+  </div>
+</div>
+
+<header>
+  <div class="brand-row">
+    <div class="wordmark">Vey<span>ro</span></div>
+    <span class="by mono">by chinhttps</span>
+  </div>
+  <nav class="mono">Smart finds, everyday essentials</nav>
+</header>
+
+<div class="admin-bar mono" id="adminBar">
+  <span>● SIGNED IN — <span id="currentUser">echinhttps</span></span>
+  <span><span id="statProducts">0</span> products · <span id="statStock">0</span> in stock</span>
+  <button id="adminLogout" class="admin-btn" type="button">Log out</button>
+</div>
+
+<section class="hero">
+  <div class="hero-tag" aria-hidden="true">
+    <svg viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 40 L60 8 L152 60 L100 92 Z" stroke="#17170F" stroke-width="2" fill="#F7F6F0"/>
+      <circle cx="52" cy="26" r="7" fill="#EFEEE6" stroke="#17170F" stroke-width="2"/>
+      <line x1="100" y1="92" x2="140" y2="6" stroke="#B8451E" stroke-width="1.5" stroke-dasharray="3 3"/>
+    </svg>
+  </div>
+
+  <span class="eyebrow mono"><span class="dot"></span>Tag 001 — Now shortlisting</span>
+
+  <h1>Smart finds for <em>everyday</em> essentials.</h1>
+
+  <p class="hero-sub">We tag, test, and shortlist the everyday goods worth your cart — so you spend less time digging through clutter and more time using things that actually work.</p>
+
+  <div class="hero-actions">
+    <a href="#features" class="btn">View the shortlist ↓</a>
+    <a href="#features" class="btn-secondary">How we tag items</a>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="section-head">
+    <h2>What's on every tag</h2>
+    <p>Six things we check before anything earns a spot in the Veyro shortlist. Click a tag for the details.</p>
+  </div>
+
+  <div class="tag-grid">
+
+    <div class="tag-card" data-tag="01" role="button" tabindex="0">
+      <div class="tag-hole"></div>
+      <span class="tag-code mono">TAG&nbsp;01</span>
+      <div class="tag-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><line x1="20" y1="20" x2="14.6" y2="14.6"/></svg>
+      </div>
+      <h3>Curated shortlist</h3>
+      <p>Every item earns its spot after real-world testing, not because it's trending.</p>
+      <span class="tag-open mono">View details →</span>
+    </div>
+
+    <div class="tag-card" data-tag="02" role="button" tabindex="0">
+      <div class="tag-hole"></div>
+      <span class="tag-code mono">TAG&nbsp;02</span>
+      <div class="tag-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      </div>
+      <h3>Plain-language specs</h3>
+      <p>Know exactly what you're buying, written in words that make sense — not marketing spin.</p>
+      <span class="tag-open mono">View details →</span>
+    </div>
+
+    <div class="tag-card" data-tag="03" role="button" tabindex="0">
+      <div class="tag-hole"></div>
+      <span class="tag-code mono">TAG&nbsp;03</span>
+      <div class="tag-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 4 8-9"/><path d="M15 6h5v5"/></svg>
+      </div>
+      <h3>Price watch</h3>
+      <p>We track price history so "on sale" actually means something when you see it.</p>
+      <span class="tag-open mono">View details →</span>
+    </div>
+
+    <div class="tag-card" data-tag="04" role="button" tabindex="0">
+      <div class="tag-hole"></div>
+      <span class="tag-code mono">TAG&nbsp;04</span>
+      <div class="tag-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1"/><path d="M15 10h4l3 3v4h-7z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg>
+      </div>
+      <h3>Fast, tracked shipping</h3>
+      <p>Every order ships with tracking, from checkout to your doorstep.</p>
+      <span class="tag-open mono">View details →</span>
+    </div>
+
+    <div class="tag-card" data-tag="05" role="button" tabindex="0">
+      <div class="tag-hole"></div>
+      <span class="tag-code mono">TAG&nbsp;05</span>
+      <div class="tag-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+      </div>
+      <h3>30-day easy returns</h3>
+      <p>Changed your mind? Send it back — no interrogation, no fine print.</p>
+      <span class="tag-open mono">View details →</span>
+    </div>
+
+    <div class="tag-card" data-tag="06" role="button" tabindex="0">
+      <div class="tag-hole"></div>
+      <span class="tag-code mono">TAG&nbsp;06</span>
+      <div class="tag-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </div>
+      <h3>Restock alerts</h3>
+      <p>Get notified the moment a sold-out favorite comes back in stock.</p>
+      <span class="tag-open mono">View details →</span>
+    </div>
+
+  </div>
+</section>
+
+<section class="merch" id="merch">
+  <div class="section-head">
+    <h2>The merch drop</h2>
+    <p>First run of Veyro gear, five colorways per piece. Showcase only — checkout isn't switched on yet.</p>
+  </div>
+
+  <!-- HOODIES -->
+  <div class="merch-category">
+    <div class="category-head">
+      <h3>Hoodies</h3>
+      <span class="mono">TAG 01–05 · 5 pcs each</span>
+    </div>
+    <div class="merch-grid">
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M32 16c4-6 8-8 18-8s14 2 18 8l14 10-8 12-8-5v45a3 3 0 0 1-3 3H37a3 3 0 0 1-3-3V33l-8 5-8-12z"/>
+            <path d="M40 16a10 10 0 0 0 20 0"/>
+            <line x1="46" y1="40" x2="46" y2="58"/>
+            <line x1="54" y1="40" x2="54" y2="58"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Hoodie</h3>
+          <span class="product-price mono">₱1,290</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#3B3B36"></i>Charcoal</span>
+        <p>Heavyweight pullover, embroidered hang-tag logo.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M32 16c4-6 8-8 18-8s14 2 18 8l14 10-8 12-8-5v45a3 3 0 0 1-3 3H37a3 3 0 0 1-3-3V33l-8 5-8-12z"/>
+            <path d="M40 16a10 10 0 0 0 20 0"/>
+            <line x1="46" y1="40" x2="46" y2="58"/>
+            <line x1="54" y1="40" x2="54" y2="58"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Hoodie</h3>
+          <span class="product-price mono">₱1,290</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#B9B6A8"></i>Stone Grey</span>
+        <p>Heavyweight pullover, embroidered hang-tag logo.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M32 16c4-6 8-8 18-8s14 2 18 8l14 10-8 12-8-5v45a3 3 0 0 1-3 3H37a3 3 0 0 1-3-3V33l-8 5-8-12z"/>
+            <path d="M40 16a10 10 0 0 0 20 0"/>
+            <line x1="46" y1="40" x2="46" y2="58"/>
+            <line x1="54" y1="40" x2="54" y2="58"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Hoodie</h3>
+          <span class="product-price mono">₱1,390</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#B8451E"></i>Rust</span>
+        <p>Heavyweight pullover, embroidered hang-tag logo. Limited colorway.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M32 16c4-6 8-8 18-8s14 2 18 8l14 10-8 12-8-5v45a3 3 0 0 1-3 3H37a3 3 0 0 1-3-3V33l-8 5-8-12z"/>
+            <path d="M40 16a10 10 0 0 0 20 0"/>
+            <line x1="46" y1="40" x2="46" y2="58"/>
+            <line x1="54" y1="40" x2="54" y2="58"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Hoodie</h3>
+          <span class="product-price mono">₱1,290</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#5C6B47"></i>Olive</span>
+        <p>Heavyweight pullover, embroidered hang-tag logo.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M32 16c4-6 8-8 18-8s14 2 18 8l14 10-8 12-8-5v45a3 3 0 0 1-3 3H37a3 3 0 0 1-3-3V33l-8 5-8-12z"/>
+            <path d="M40 16a10 10 0 0 0 20 0"/>
+            <line x1="46" y1="40" x2="46" y2="58"/>
+            <line x1="54" y1="40" x2="54" y2="58"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Hoodie</h3>
+          <span class="product-price mono">₱1,290</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#17170F"></i>Black</span>
+        <p>Heavyweight pullover, embroidered hang-tag logo.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CAPS -->
+  <div class="merch-category">
+    <div class="category-head">
+      <h3>Caps</h3>
+      <span class="mono">TAG 06–10 · 5 pcs each</span>
+    </div>
+    <div class="merch-grid">
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M18 62c0-20 14-34 32-34s32 14 32 34"/>
+            <path d="M18 62c-4 1-6 3-6 6s10 6 38 6 38-3 38-6-2-5-6-6"/>
+            <path d="M50 28v-8"/>
+            <circle cx="50" cy="18" r="3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Cap</h3>
+          <span class="product-price mono">₱650</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#17170F"></i>Classic Black</span>
+        <p>Structured 6-panel cap, curved brim, adjustable strap.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M18 62c0-20 14-34 32-34s32 14 32 34"/>
+            <path d="M18 62c-4 1-6 3-6 6s10 6 38 6 38-3 38-6-2-5-6-6"/>
+            <path d="M50 28v-8"/>
+            <circle cx="50" cy="18" r="3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Cap</h3>
+          <span class="product-price mono">₱650</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#B9B6A8"></i>Stone</span>
+        <p>Structured 6-panel cap, curved brim, adjustable strap.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M18 62c0-20 14-34 32-34s32 14 32 34"/>
+            <path d="M18 62c-4 1-6 3-6 6s10 6 38 6 38-3 38-6-2-5-6-6"/>
+            <path d="M50 28v-8"/>
+            <circle cx="50" cy="18" r="3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Cap</h3>
+          <span class="product-price mono">₱690</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#B8451E"></i>Rust</span>
+        <p>Structured 6-panel cap, curved brim, adjustable strap. Limited colorway.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M18 62c0-20 14-34 32-34s32 14 32 34"/>
+            <path d="M18 62c-4 1-6 3-6 6s10 6 38 6 38-3 38-6-2-5-6-6"/>
+            <path d="M50 28v-8"/>
+            <circle cx="50" cy="18" r="3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Cap</h3>
+          <span class="product-price mono">₱650</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#2C3A52"></i>Navy</span>
+        <p>Structured 6-panel cap, curved brim, adjustable strap.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M18 62c0-20 14-34 32-34s32 14 32 34"/>
+            <path d="M18 62c-4 1-6 3-6 6s10 6 38 6 38-3 38-6-2-5-6-6"/>
+            <path d="M50 28v-8"/>
+            <circle cx="50" cy="18" r="3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Veyro Cap</h3>
+          <span class="product-price mono">₱650</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#5C6B47"></i>Olive</span>
+        <p>Structured 6-panel cap, curved brim, adjustable strap.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VINTAGE TEES -->
+  <div class="merch-category">
+    <div class="category-head">
+      <h3>Vintage Tees</h3>
+      <span class="mono">TAG 11–15 · 5 pcs each</span>
+    </div>
+    <div class="merch-grid">
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M34 18 18 30l8 12 8-6v46h32V36l8 6 8-12-16-12"/>
+            <path d="M34 18c4 6 10 9 16 9s12-3 16-9"/>
+            <line x1="40" y1="52" x2="60" y2="70" stroke-dasharray="2 3"/>
+            <line x1="60" y1="52" x2="40" y2="70" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Vintage Tee</h3>
+          <span class="product-price mono">₱590</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#E8E5DA"></i>Washed White</span>
+        <p>Garment-washed graphic tee, cracked-print Veyro mark.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M34 18 18 30l8 12 8-6v46h32V36l8 6 8-12-16-12"/>
+            <path d="M34 18c4 6 10 9 16 9s12-3 16-9"/>
+            <line x1="40" y1="52" x2="60" y2="70" stroke-dasharray="2 3"/>
+            <line x1="60" y1="52" x2="40" y2="70" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Vintage Tee</h3>
+          <span class="product-price mono">₱590</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#3B3B36"></i>Faded Black</span>
+        <p>Garment-washed graphic tee, cracked-print Veyro mark.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M34 18 18 30l8 12 8-6v46h32V36l8 6 8-12-16-12"/>
+            <path d="M34 18c4 6 10 9 16 9s12-3 16-9"/>
+            <line x1="40" y1="52" x2="60" y2="70" stroke-dasharray="2 3"/>
+            <line x1="60" y1="52" x2="40" y2="70" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Vintage Tee</h3>
+          <span class="product-price mono">₱650</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#B8451E"></i>Rust Wash</span>
+        <p>Garment-washed graphic tee, cracked-print Veyro mark. Limited colorway.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M34 18 18 30l8 12 8-6v46h32V36l8 6 8-12-16-12"/>
+            <path d="M34 18c4 6 10 9 16 9s12-3 16-9"/>
+            <line x1="40" y1="52" x2="60" y2="70" stroke-dasharray="2 3"/>
+            <line x1="60" y1="52" x2="40" y2="70" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Vintage Tee</h3>
+          <span class="product-price mono">₱590</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#7C8A6A"></i>Sage</span>
+        <p>Garment-washed graphic tee, cracked-print Veyro mark.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+      <div class="product-card">
+        <span class="product-badge mono">Preview</span>
+        <div class="product-image">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#17170F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M34 18 18 30l8 12 8-6v46h32V36l8 6 8-12-16-12"/>
+            <path d="M34 18c4 6 10 9 16 9s12-3 16-9"/>
+            <line x1="40" y1="52" x2="60" y2="70" stroke-dasharray="2 3"/>
+            <line x1="60" y1="52" x2="40" y2="70" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div class="product-info">
+          <h3>Vintage Tee</h3>
+          <span class="product-price mono">₱590</span>
+        </div>
+        <span class="colorway"><i class="swatch" style="background:#B9B6A8"></i>Stone</span>
+        <p>Garment-washed graphic tee, cracked-print Veyro mark.</p>
+        <span class="product-stock mono">5 pcs available</span>
+        <button class="product-cta">Checkout coming soon</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand-row">
+    <div class="wordmark">Vey<span>ro</span></div>
+    <span class="by mono">by chinhttps</span>
+  </div>
+  <span class="mono">© 2026 VEYRO — STUDENT PROJECT, SYSTEM ANALYSIS &amp; DESIGN</span>
+</footer>
+
+<div class="modal-overlay" id="tagModal">
+  <div class="modal-box tag-modal-box">
+    <button class="modal-close" id="tagModalClose" type="button" aria-label="Close">&times;</button>
+    <span class="tag-modal-code mono" id="tagModalCode">TAG 01</span>
+    <h3 id="tagModalTitle">Title</h3>
+    <p class="tag-modal-desc" id="tagModalDesc">Description</p>
+    <p class="tag-modal-label mono" id="tagModalOptionsLabel">Options</p>
+    <div class="tag-option-list" id="tagModalOptions"></div>
+    <button class="tag-modal-close-btn" id="tagModalDone" type="button">Got it</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Seeded default admin account; sign-ups are added here in memory for this visit only
+  const accounts = [ { user: "echinhttps", pass: "062527" } ];
+
+  const gate = document.getElementById('gateOverlay');
+  const body = document.body;
+  const logoutBtn = document.getElementById('adminLogout');
+  const currentUserEl = document.getElementById('currentUser');
+
+  const tabLogin = document.getElementById('tabLogin');
+  const tabSignup = document.getElementById('tabSignup');
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const loginError = document.getElementById('loginError');
+  const signupError = document.getElementById('signupError');
+  const gateBox = document.querySelector('.gate-box');
+
+  function showToast(msg){
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    requestAnimationFrame(()=> t.classList.add('show'));
+    setTimeout(()=>{
+      t.classList.remove('show');
+      setTimeout(()=> t.remove(), 300);
+    }, 2600);
+  }
+
+  function shakeGate(){
+    gateBox.classList.remove('shake');
+    void gateBox.offsetWidth;
+    gateBox.classList.add('shake');
+  }
+
+  function switchTab(tab){
+    const showLogin = tab === 'login';
+    tabLogin.classList.toggle('active', showLogin);
+    tabSignup.classList.toggle('active', !showLogin);
+    loginForm.style.display = showLogin ? '' : 'none';
+    signupForm.style.display = showLogin ? 'none' : '';
+    loginError.textContent = '';
+    signupError.textContent = '';
+  }
+  tabLogin.addEventListener('click', function(){ switchTab('login'); });
+  tabSignup.addEventListener('click', function(){ switchTab('signup'); });
+
+  function updateAdminStats(){
+    const products = document.querySelectorAll('.product-card').length;
+    let totalStock = 0;
+    document.querySelectorAll('.product-stock').forEach(el=>{
+      const n = parseInt(el.textContent, 10);
+      if(!isNaN(n)) totalStock += n;
+    });
+    document.getElementById('statProducts').textContent = products;
+    document.getElementById('statStock').textContent = totalStock + ' pcs';
+  }
+
+  function grantAccess(user, message){
+    gate.classList.add('gate-hidden');
+    body.classList.remove('gate-open');
+    body.classList.add('admin-active');
+    currentUserEl.textContent = user;
+    updateAdminStats();
+    showToast(message);
+  }
+
+  loginForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value;
+    const match = accounts.find(a => a.user === user && a.pass === pass);
+    if(match){
+      loginForm.reset();
+      grantAccess(match.user, 'Login successful — welcome back, ' + match.user + '.');
+    } else {
+      loginError.textContent = 'Incorrect admin ID or password.';
+      shakeGate();
+    }
+  });
+
+  signupForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const user = document.getElementById('signupUser').value.trim();
+    const pass = document.getElementById('signupPass').value;
+    const confirm = document.getElementById('signupConfirm').value;
+
+    if(!user || !pass){
+      signupError.textContent = 'Fill in an admin ID and password.';
+      shakeGate();
+      return;
+    }
+    if(accounts.some(a => a.user === user)){
+      signupError.textContent = 'That admin ID is already taken.';
+      shakeGate();
+      return;
+    }
+    if(pass !== confirm){
+      signupError.textContent = 'Passwords don\'t match.';
+      shakeGate();
+      return;
+    }
+    accounts.push({ user: user, pass: pass });
+    signupForm.reset();
+    grantAccess(user, 'Account created — welcome, ' + user + '.');
+  });
+
+  logoutBtn.addEventListener('click', function(){
+    body.classList.remove('admin-active');
+    body.classList.add('gate-open');
+    gate.classList.remove('gate-hidden');
+    switchTab('login');
+    showToast('Logged out.');
+  });
+
+  // Checkout buttons — functional click, no real checkout
+  document.querySelectorAll('.product-cta').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      showToast('Checkout is disabled — this is a showcase build.');
+    });
+  });
+
+  // Feature tag detail content
+  const tagData = {
+    "01": {
+      code: "TAG 01",
+      title: "Curated shortlist",
+      desc: "Every item earns its spot after real-world testing, not because it's trending. Here's how you can sort the shortlist.",
+      optionsLabel: "Sort shortlist by",
+      options: ["Most tested", "Newest additions", "Staff picks"]
+    },
+    "02": {
+      code: "TAG 02",
+      title: "Plain-language specs",
+      desc: "Know exactly what you're buying, written in words that make sense — not marketing spin. Choose how specs are shown to you.",
+      optionsLabel: "Spec view format",
+      options: ["Plain summary", "Full spec sheet", "Side-by-side compare"]
+    },
+    "03": {
+      code: "TAG 03",
+      title: "Price watch",
+      desc: "We track price history so \"on sale\" actually means something when you see it. Pick when you want to hear about it.",
+      optionsLabel: "Alert me when",
+      options: ["Price drops 10%+", "Item hits lowest-ever price", "Any price change"]
+    },
+    "04": {
+      code: "TAG 04",
+      title: "Fast, tracked shipping",
+      desc: "Every order ships with tracking, from checkout to your doorstep. Choose the speed that fits.",
+      optionsLabel: "Shipping speed",
+      options: ["Standard (3–5 days)", "Express (1–2 days)", "Store pickup"]
+    },
+    "05": {
+      code: "TAG 05",
+      title: "30-day easy returns",
+      desc: "Changed your mind? Send it back — no interrogation, no fine print. Tell us why and we'll pre-fill the label.",
+      optionsLabel: "Return reason",
+      options: ["Changed my mind", "Wrong size or fit", "Item issue / damaged"]
+    },
+    "06": {
+      code: "TAG 06",
+      title: "Restock alerts",
+      desc: "Get notified the moment a sold-out favorite comes back in stock. Pick how you'd like to hear first.",
+      optionsLabel: "Notify me via",
+      options: ["Email", "SMS", "Push notification"]
+    }
+  };
+
+  const tagModal = document.getElementById('tagModal');
+  const tagModalCode = document.getElementById('tagModalCode');
+  const tagModalTitle = document.getElementById('tagModalTitle');
+  const tagModalDesc = document.getElementById('tagModalDesc');
+  const tagModalOptionsLabel = document.getElementById('tagModalOptionsLabel');
+  const tagModalOptions = document.getElementById('tagModalOptions');
+  const tagModalClose = document.getElementById('tagModalClose');
+  const tagModalDone = document.getElementById('tagModalDone');
+
+  function openTagModal(id){
+    const data = tagData[id];
+    if(!data) return;
+    tagModalCode.textContent = data.code;
+    tagModalTitle.textContent = data.title;
+    tagModalDesc.textContent = data.desc;
+    tagModalOptionsLabel.textContent = data.optionsLabel;
+    tagModalOptions.innerHTML = '';
+    data.options.forEach(function(opt, i){
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tag-option' + (i === 0 ? ' selected' : '');
+      btn.innerHTML = '<span class="dot-ring"></span><span>' + opt + '</span>';
+      btn.addEventListener('click', function(){
+        tagModalOptions.querySelectorAll('.tag-option').forEach(o => o.classList.remove('selected'));
+        btn.classList.add('selected');
+        showToast(opt + ' selected.');
+      });
+      tagModalOptions.appendChild(btn);
+    });
+    tagModal.classList.add('open');
+  }
+  function closeTagModal(){ tagModal.classList.remove('open'); }
+
+  tagModalClose.addEventListener('click', closeTagModal);
+  tagModalDone.addEventListener('click', closeTagModal);
+  tagModal.addEventListener('click', function(e){ if(e.target === tagModal) closeTagModal(); });
+
+  document.querySelectorAll('.tag-card').forEach(function(card){
+    card.addEventListener('click', function(){ openTagModal(card.dataset.tag); });
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openTagModal(card.dataset.tag);
+      }
+    });
+  });
+
+  // 3D tilt on tag cards and product cards
+  function attachTilt(el, max){
+    el.addEventListener('mousemove', function(e){
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = 'translateY(-3px) rotateX(' + (-y * max).toFixed(2) + 'deg) rotateY(' + (x * max).toFixed(2) + 'deg)';
+    });
+    el.addEventListener('mouseleave', function(){
+      el.style.transform = '';
+    });
+  }
+  document.querySelectorAll('.product-card').forEach(function(el){ attachTilt(el, 9); });
+  document.querySelectorAll('.tag-card').forEach(function(el){ attachTilt(el, 7); });
+
+  // Smooth-scroll CTA feedback
+  document.querySelectorAll('a[href^="#"]').forEach(function(link){
+    link.addEventListener('click', function(){
+      showToast('Jumping to ' + link.getAttribute('href').replace('#','').replace('-', ' ') + '…');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
